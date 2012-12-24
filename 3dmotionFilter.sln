@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3dmotionFilter", "3dmotionFilter\3dmotionFilter.vcproj", "{9391D98A-2186-463E-A214-ADCC30A7A262}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7BF096D3-3BA2-4C74-A3F5-AA5806EDC929} = {7BF096D3-3BA2-4C74-A3F5-AA5806EDC929}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseCode", "BaseCode\BaseCode.vcproj", "{7BF096D3-3BA2-4C74-A3F5-AA5806EDC929}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9391D98A-2186-463E-A214-ADCC30A7A262}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9391D98A-2186-463E-A214-ADCC30A7A262}.Debug|Win32.Build.0 = Debug|Win32
+		{9391D98A-2186-463E-A214-ADCC30A7A262}.Release|Win32.ActiveCfg = Release|Win32
+		{9391D98A-2186-463E-A214-ADCC30A7A262}.Release|Win32.Build.0 = Release|Win32
+		{7BF096D3-3BA2-4C74-A3F5-AA5806EDC929}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7BF096D3-3BA2-4C74-A3F5-AA5806EDC929}.Debug|Win32.Build.0 = Debug|Win32
+		{7BF096D3-3BA2-4C74-A3F5-AA5806EDC929}.Release|Win32.ActiveCfg = Release|Win32
+		{7BF096D3-3BA2-4C74-A3F5-AA5806EDC929}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
