@@ -18,6 +18,7 @@ namespace
 // ==============================================================================
 void LoadFile2List(const char *pszFile, std::vector<int> &rVecFilter, CListBox &rLst)
 {
+	rVecFilter.clear();
 	rLst.ResetContent();
 
 	//~~~~~~~~~~~~~~~~~~~~
@@ -306,12 +307,12 @@ void CMy3dmotionFilterDlg::OnBnClickedButton1()
 			}
 		}
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		int nMountType = i64Key / 10000000000;
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		int nMountType = i64Key / 10000000000 % 100;
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 		if (!m_vecMountFilter.empty()) {
-			if (std::find(m_vecMountFilter.begin(), m_vecMountFilter.end(), nWeaponType) != m_vecMountFilter.end()) {
+			if (std::find(m_vecMountFilter.begin(), m_vecMountFilter.end(), nMountType) != m_vecMountFilter.end()) {
 				++nFiltered;
 				fprintf(pFileOut, "%s", szLine);
 				continue;
