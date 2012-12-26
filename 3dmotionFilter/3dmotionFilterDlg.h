@@ -37,8 +37,13 @@ public:
 	afx_msg void OnBnClickedButton1();
 	CListBox m_lstMountType;
 	CListBox m_lstWeaponType;
+	CListBox m_lstLook;
+	CListBox m_lstMotion;
 	std::vector<int> m_vecMountFilter;
 	std::vector<int> m_vecWeaponFilter;
+	std::vector<int> m_vecLookFilter;
+	std::vector<int> m_vecMotionFilter;
 	CEdit m_edtLog;
 	afx_msg void OnBnClickedButton2();
+	void LoadIni2Lst(void);
 };

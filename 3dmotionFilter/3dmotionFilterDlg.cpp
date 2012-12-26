@@ -25,10 +25,8 @@ void LoadFile2List(const char *pszFile, std::vector<int> &rVecFilter, CListBox &
 	char szLine[MAX_STRING];
 	//~~~~~~~~~~~~~~~~~~~~
 
-	_snprintf(szLine, sizeof(szLine), "未指定%s文件", pszFile);
+	_snprintf(szLine, sizeof(szLine), "no %s", pszFile);
 	rLst.AddString(szLine);
-	rLst.AddString("默认不使用此类型过滤");
-
 	if (NULL == pszFile) {
 		return;
 	}
@@ -42,6 +40,7 @@ void LoadFile2List(const char *pszFile, std::vector<int> &rVecFilter, CListBox &
 	}
 
 	rLst.ResetContent();
+
 	while (fgets(szLine, sizeof(szLine), pFile)) {
 
 		//~~~~~~~~~
@@ -57,6 +56,11 @@ void LoadFile2List(const char *pszFile, std::vector<int> &rVecFilter, CListBox &
 
 	for (std::vector<int>::const_iterator it(rVecFilter.begin()); it != rVecFilter.end(); ++it) {
 		_snprintf(szLine, sizeof(szLine), "%d", *it);
+		rLst.AddString(szLine);
+	}
+
+	if (rVecFilter.empty()) {
+		_snprintf(szLine, sizeof(szLine), "%s empty", pszFile);
 		rLst.AddString(szLine);
 	}
 }
@@ -114,6 +118,8 @@ void CMy3dmotionFilterDlg::DoDataExchange(CDataExchange *pDX)
 	DDX_Control(pDX, IDC_LIST1, m_lstMountType);
 	DDX_Control(pDX, IDC_LIST2, m_lstWeaponType);
 	DDX_Control(pDX, IDC_EDIT1, m_edtLog);
+	DDX_Control(pDX, IDC_LIST3, m_lstLook);
+	DDX_Control(pDX, IDC_LIST4, m_lstMotion);
 }
 
 BEGIN_MESSAGE_MAP(CMy3dmotionFilterDlg, CDialog)
@@ -157,15 +163,14 @@ BOOL CMy3dmotionFilterDlg::OnInitDialog()
 	}
 
 	// Set the icon for this dialog. The framework does this automatically
-	// when the application's main window is not a dialog
+	// when the application's main window is not a dialo
 	SetIcon(m_hIcon, TRUE);		// Set big icon
 	SetIcon(m_hIcon, FALSE);	// Set small icon
 
 	SetLogEdit(&m_edtLog);
 
 	LogInfoIn("Load Filter Files");
-	LoadFile2List("mountFilter.ini", m_vecMountFilter, m_lstMountType);
-	LoadFile2List("weaponFilter.ini", m_vecWeaponFilter, m_lstWeaponType);
+	this->LoadIni2Lst();
 
 	// TODO: Add extra initialization here
 	return TRUE;				// return TRUE unless you set the focus to a control
@@ -270,7 +275,7 @@ void CMy3dmotionFilterDlg::OnBnClickedButton1()
 		if (nSubCount == nLinesPerReport) {
 			nSubCount = 0;
 			++nReportTime;
-			LogInfoIn("	Process %d Lines  Data %d  Filtered %d", nReportTime * nLinesPerReport, nData, nFiltered);
+			LogInfoIn("   Process %d Lines  Data %d  Filtered %d", nReportTime * nLinesPerReport, nData, nFiltered);
 		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -318,6 +323,30 @@ void CMy3dmotionFilterDlg::OnBnClickedButton1()
 				continue;
 			}
 		}
+
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		int nLook = i64Key / 10000000 % 1000;
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+		if (!m_vecLookFilter.empty()) {
+			if (std::find(m_vecLookFilter.begin(), m_vecLookFilter.end(), nLook) != m_vecLookFilter.end()) {
+				++nFiltered;
+				fprintf(pFileOut, "%s", szLine);
+				continue;
+			}
+		}
+
+		//~~~~~~~~~~~~~~~~~~~~~~~~~
+		int nMotion = i64Key % 10000;
+		//~~~~~~~~~~~~~~~~~~~~~~~~~
+
+		if (!m_vecMotionFilter.empty()) {
+			if (std::find(m_vecMotionFilter.begin(), m_vecMotionFilter.end(), nMotion) != m_vecMotionFilter.end()) {
+				++nFiltered;
+				fprintf(pFileOut, "%s", szLine);
+				continue;
+			}
+		}
 	}
 
 	fclose(pFileIn);
@@ -331,6 +360,15 @@ void CMy3dmotionFilterDlg::OnBnClickedButton1()
 void CMy3dmotionFilterDlg::OnBnClickedButton2()
 {
 	LogInfoIn("Reload Filter Files");
+	this->LoadIni2Lst();
+}
+
+// ============================================================================
+// ==============================================================================
+void CMy3dmotionFilterDlg::LoadIni2Lst(void)
+{
 	LoadFile2List("mountFilter.ini", m_vecMountFilter, m_lstMountType);
 	LoadFile2List("weaponFilter.ini", m_vecWeaponFilter, m_lstWeaponType);
+	LoadFile2List("lookFilter.ini", m_vecLookFilter, m_lstLook);
+	LoadFile2List("motionFilter.ini", m_vecMotionFilter, m_lstMotion);
 }
